@@ -1,0 +1,12 @@
+[submodule "Engine/dependecies/spdlog"]
+	path = Engine/dependecies/spdlog
+	url = https://github.com/gabime/spdlog
+[submodule "Engine/dependecies/GLFW"]
+	path = Engine/dependecies/GLFW
+	url = https://github.com/AleksandarSherbula/GLFW
+[submodule "Engine/dependecies/imgui"]
+	path = Engine/dependecies/imgui
+	url = https://github.com/AleksandarSherbula/imgui
+[submodule "Engine/dependecies/glm"]
+	path = Engine/dependecies/glm
+	url = https://github.com/g-truc/glm
