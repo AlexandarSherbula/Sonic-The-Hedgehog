@@ -474,7 +474,7 @@ void Player::GroundSensors()
             mAirSpeed = 0.0f;
             mGroundSpeed = mSpeed.x;
             if (mGroundSpeed != 0.0f)
-                SetAnimationState(PlayerAnimState::MOVE);
+                SetAnimationState(PlayerAnimState::MOVE, {0, 3});
             else
                 SetAnimationState(PlayerAnimState::IDLE);
         }
@@ -483,6 +483,8 @@ void Player::GroundSensors()
     }
     else if (state != PlayerStates::AIRBORNE)
     {
+        if (!mJumped && std::abs(mGroundSpeed) < mTop)
+            SetAnimationState(PlayerAnimState::AIR_WALK, { 0, 10 });
         state = PlayerStates::AIRBORNE;
         mAirSpeed = mSpeed.x;
     }
@@ -532,15 +534,15 @@ void Player::UpdateSensors()
 
 void Player::Draw()
 {
-    Alexio::Vector2 newPosition = position;
-    newPosition.y = position.y - 4.0f;
+    /*
+    * Because the physical position in Y axis drops down by 10 while crouching, we need to offset the drawing image position by so.
+    * We're checking the functionality state instead of animation state, because animation goes through standing up phase before it
+    * switches to another animation, but we need to swap back to original position immediately after down button has been released.
+    */
     if (lookState == PlayerLookStates::LOOK_DOWN)
-        newPosition.y = position.y - 10.0f; // using actual states instead of animation ones due to delay of animation state when looking down
+        mDrawingPosition.y = position.y - 10.0f; 
 
-    if (mDirection == Direction::RIGHT && mAnimationState == PlayerAnimState::PUSHING)
-        newPosition.x = position.x + 1.0f;
-
-    Alexio::Renderer::DrawPartialSprite(mGFX, newPosition, (1.0f + GetSubImageUnitPos()) + GetSubImagePosition(), GetSubImageSize(), 0.0f, Alexio::Vector4(1.0f), {1.0f * (int)mDirection, 1.0f});
+    Alexio::Renderer::DrawPartialSprite(mGFX, mDrawingPosition, mSubImagePosition, mSubImageSize, 0.0f, Alexio::Vector4(1.0f), {1.0f * (int)mDirection, 1.0f});
 }
 
 void Player::DrawHitbox()
@@ -622,6 +624,7 @@ void Player::OnImGuiRender()
     ImGui::Text("State: %s", cPlayerState);
     ImGui::Text("Look State: %s", cPlayerLookState);
     ImGui::Text("Animation: %s", mAnimationName);
+    ImGui::Text("");
     ImGui::Text("A distance: %.6f, B distance: %.6f", mPointA.distance, mPointB.distance);
     ImGui::Text("C distance: %.6f, D distance: %.6f", mPointC.distance, mPointD.distance);
     ImGui::Text("E distance: %.6f, F distance: %.6f", mPointE.distance, mPointF.distance);

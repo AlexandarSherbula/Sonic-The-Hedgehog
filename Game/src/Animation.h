@@ -21,9 +21,12 @@ public:
 
 	virtual void ResetCounters();
 protected:
+	const char* mAnimationName;
 	double mTimer;
 	uint32_t mFrameCounter;
 	uint32_t mMaxFrameCount;
+	Alexio::Vector2 mDrawingPosition;
+	Alexio::Vector2 mSubImagePosition;
 	Alexio::Vector2 mSubImageSize;
 	Alexio::Vector2i mSubImageUnitPos;
 };
@@ -39,7 +42,8 @@ enum class PlayerAnimState
 	SKID_TURN,
 	JUMP,
 	ROLLING,
-	PUSHING
+	PUSHING,
+	AIR_WALK
 };
 
 class PlayerAnimation : public Animation
@@ -49,8 +53,6 @@ protected:
 	uint8_t mBoredOneCount;
 	uint8_t mBoredTwoCount;
 	uint8_t mBoredTwoMidCount;
-
-	const char* mAnimationName;
 public:
 	PlayerAnimation();
 	PlayerAnimation(const Alexio::Vector2& subImageSize, const Alexio::Vector2i& subImageUnitPos);
@@ -59,6 +61,4 @@ public:
 	void ResetCounters() override;
 
 	void SetAnimationState(PlayerAnimState state, const Alexio::Vector2i& subImageUnitPos = {0, 0});
-
-	const char* GetAnimationName();
 };

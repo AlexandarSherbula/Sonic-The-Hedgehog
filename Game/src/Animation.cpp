@@ -6,7 +6,11 @@ Animation::Animation(const Alexio::Vector2& subImageSize, const Alexio::Vector2i
 	mSubImageSize = subImageSize;
 	mSubImageUnitPos = subImageUnitPos;
 
+    mSubImagePosition = (Alexio::Vector2)(1 + mSubImageUnitPos) + Alexio::Vector2(mSubImageSize.x * mSubImageUnitPos.x, mSubImageSize.y * mSubImageUnitPos.y);
+
 	mTimer = 0.0f;
+
+    mAnimationName = "Unknown";
 }
 
 void Animation::ResetCounters()
@@ -31,7 +35,7 @@ PlayerAnimation::PlayerAnimation(const Alexio::Vector2& subImageSize, const Alex
     mBoredTwoCount = 0;
     mBoredTwoMidCount = 0;
 
-    mAnimationName = "Unknown";
+    mDrawingPosition = { 0.0f, 0.0f };
 }
 
 void PlayerAnimation::SetAnimationState(PlayerAnimState state, const Alexio::Vector2i& subImageUnitPos)
@@ -42,11 +46,6 @@ void PlayerAnimation::SetAnimationState(PlayerAnimState state, const Alexio::Vec
         mSubImageUnitPos = subImageUnitPos;
         ResetCounters();
     }
-}
-
-const char* PlayerAnimation::GetAnimationName()
-{
-    return "Unknown";
 }
 
 void PlayerAnimation::ResetCounters()
@@ -65,6 +64,9 @@ void PlayerAnimation::ResetCounters()
 
 void Player::HandleAnimation()
 {
+    mSubImageSize = { 48.0f, 48.0f };
+    mDrawingPosition = { position.x, position.y - 4.0f };
+
     switch (mAnimationState)
     {
         case PlayerAnimState::IDLE:
@@ -157,6 +159,8 @@ void Player::HandleAnimation()
                 }
 
             }
+
+            mSubImagePosition = (Alexio::Vector2)(1 + mSubImageUnitPos) + Alexio::Vector2(mSubImageSize.x * mSubImageUnitPos.x, mSubImageSize.y * mSubImageUnitPos.y);
             break;
         }
         case PlayerAnimState::LOOK_UP:
@@ -184,6 +188,8 @@ void Player::HandleAnimation()
             }
 
             mFrameCounter++;
+
+            mSubImagePosition = (Alexio::Vector2)(1 + mSubImageUnitPos) + Alexio::Vector2(mSubImageSize.x * mSubImageUnitPos.x, mSubImageSize.y * mSubImageUnitPos.y);
             break;
         }
         case PlayerAnimState::LOOK_DOWN:
@@ -211,6 +217,7 @@ void Player::HandleAnimation()
             }
 
             mFrameCounter++;
+            mSubImagePosition = (Alexio::Vector2)(1 + mSubImageUnitPos) + Alexio::Vector2(mSubImageSize.x * mSubImageUnitPos.x, mSubImageSize.y * mSubImageUnitPos.y);
             break;
         }
         case PlayerAnimState::MOVE:
@@ -269,6 +276,7 @@ void Player::HandleAnimation()
             else
                 mFrameCounter++;
 
+            mSubImagePosition = (Alexio::Vector2)(1 + mSubImageUnitPos) + Alexio::Vector2(mSubImageSize.x * mSubImageUnitPos.x, mSubImageSize.y * mSubImageUnitPos.y);
             break;
         }
         case PlayerAnimState::SKID:
@@ -295,6 +303,8 @@ void Player::HandleAnimation()
             }
             else
                 SetAnimationState(PlayerAnimState::MOVE, { 0, 3 });
+
+            mSubImagePosition = (Alexio::Vector2)(1 + mSubImageUnitPos) + Alexio::Vector2(mSubImageSize.x * mSubImageUnitPos.x, mSubImageSize.y * mSubImageUnitPos.y);
             break;
         }
         case PlayerAnimState::SKID_TURN:
@@ -315,6 +325,7 @@ void Player::HandleAnimation()
             else
                 mFrameCounter++;
 
+            mSubImagePosition = (Alexio::Vector2)(1 + mSubImageUnitPos) + Alexio::Vector2(mSubImageSize.x * mSubImageUnitPos.x, mSubImageSize.y * mSubImageUnitPos.y);
             break;
         }
         case PlayerAnimState::JUMP: case PlayerAnimState::ROLLING:
@@ -337,12 +348,18 @@ void Player::HandleAnimation()
             }
             else
                 mFrameCounter++;
+
+            mSubImagePosition = (Alexio::Vector2)(1 + mSubImageUnitPos) + Alexio::Vector2(mSubImageSize.x * mSubImageUnitPos.x, mSubImageSize.y * mSubImageUnitPos.y);
             break;
         }
         case PlayerAnimState::PUSHING:
         {
             mAnimationName = "PUSHING";
             mMaxFrameCount = 5;
+
+            if (mDirection == Direction::RIGHT)
+                mDrawingPosition.x = position.x + 1.0f;
+
             if (mFrameCounter >= mMaxFrameCount)
             {
                 if (mSubImageUnitPos.x == 9)
@@ -355,7 +372,29 @@ void Player::HandleAnimation()
             else
                 mFrameCounter++;
 
+            mSubImagePosition = (Alexio::Vector2)(1 + mSubImageUnitPos) + Alexio::Vector2(mSubImageSize.x * mSubImageUnitPos.x, mSubImageSize.y * mSubImageUnitPos.y);
             break;
         }
+        case PlayerAnimState::AIR_WALK:
+        {
+            mMaxFrameCount = 3;
+            if (mFrameCounter >= mMaxFrameCount)
+            {
+                if (mSubImageUnitPos.x == 11)
+                    mSubImageUnitPos.x = 0;
+                else
+                    mSubImageUnitPos.x++;
+
+                mFrameCounter = 0;
+            }
+            else
+                mFrameCounter++;
+
+            mDrawingPosition = { position.x, position.y + 3.5f };
+            mSubImagePosition = (Alexio::Vector2)(1 + mSubImageUnitPos) + Alexio::Vector2(mSubImageSize.x * mSubImageUnitPos.x, mSubImageSize.y * mSubImageUnitPos.y + 7.0f);
+            break;
+        }
+        default:
+            mAnimationName = "Unknown";
     }
 }

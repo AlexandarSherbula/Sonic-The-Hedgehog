@@ -57,8 +57,7 @@ void Game::OnImGuiRender()
 
     ImGui::Begin("App Info");
     ImGui::Text("Graphics API: %s", apiName);
-    ImGui::Text("Application Time: %.2f", Alexio::Timer::Get());
-    ImGui::Text("Player from focal point offset: %.6f", cameraController->offset.y);
+    ImGui::Text("Application Time: %.2f", Alexio::Timer::Get());    
     ImGui::Text("Application framerate: %.3f ms/frame (%.1f FPS)", Alexio::Timer::DetlaTime() * 1000.0f, 1.0f / Alexio::Timer::DetlaTime());
     ImGui::Text("Camera: X: %.6f, Y: %.6f", cameraController->position.x, cameraController->position.y);
     ImGui::End();
