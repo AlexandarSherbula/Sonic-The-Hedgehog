@@ -31,6 +31,7 @@ private:
 	AnchorPoint mPointD;
 	AnchorPoint mPointE;
 	AnchorPoint mPointF;
+	AnchorPoint mPointG;
 
 	float mAcceleration;
 	float mFriction;

@@ -37,7 +37,7 @@ bool Game::OnUpdate()
     currentAct->Draw();
 
     player->Draw();
-    player->DrawHitbox();
+    //player->DrawHitbox();
 
     OnImGuiRender();
     return !Alexio::Input::KeyPressed(ESCAPE);

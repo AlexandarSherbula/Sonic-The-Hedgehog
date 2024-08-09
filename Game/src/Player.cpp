@@ -20,6 +20,9 @@ Player::Player(const Alexio::Vector2& position, int widthRad, int heightRad, Dir
     mPointE = AnchorPoint({ -1,  0 }, TileSolidity::SIDE_AND_CEILING);
     mPointF = AnchorPoint({ 1,  0 },  TileSolidity::SIDE_AND_CEILING);
 
+    mPointG = AnchorPoint({ 0,  1 }, TileSolidity::GROUD_ONLY);
+    
+
     mTop = 6.0f;
     mAngle = 0.0f;
 
@@ -457,6 +460,9 @@ void Player::GroundSensors()
     FindSurface(mPointA);
     FindSurface(mPointB);
 
+    if (mSpeed.x == 0.0f && state != PlayerStates::AIRBORNE)
+        FindSurface(mPointG);
+
     float groundDistance = std::min(mPointA.distance, mPointB.distance);
     if (groundDistance > -14.0f && groundDistance < std::min(std::abs(mSpeed.x) + 4, 14.0f))
     {
@@ -488,6 +494,9 @@ void Player::GroundSensors()
         state = PlayerStates::AIRBORNE;
         mAirSpeed = mSpeed.x;
     }
+
+    if (mPointG.distance >= 16.0f && state == PlayerStates::NORMAL && mSpeed.x == 0.0f)
+        SetAnimationState(PlayerAnimState::BALANCING);
 }
 
 void Player::AirDrag()
@@ -523,6 +532,8 @@ void Player::UpdateSensors()
     {
         mPointA.position = { position.x - mHitbox.widthRad - 1.0f, position.y + mHitbox.heightRad + 3.0f };
         mPointB.position = { position.x + mHitbox.widthRad + 1.0f, position.y + mHitbox.heightRad + 3.0f };
+        
+        mPointG.position = { position.x, position.y + mHitbox.heightRad + 3.0f };
 
         mPointC.position = { position.x - mHitbox.widthRad - 1.0f, position.y - mHitbox.heightRad - 3.0f };
         mPointD.position = { position.x + mHitbox.widthRad + 1.0f, position.y - mHitbox.heightRad - 3.0f };
@@ -558,8 +569,15 @@ void Player::DrawHitbox()
         Alexio::Renderer::DrawQuad({ mPointA.position.x, mPointA.position.y - mHitbox.heightRad - 3.0f }, { 1, mHitbox.heightRad + 3.0f }, { 0.0f, 1.0f, 0.0f, 1.0f });
         Alexio::Renderer::DrawQuad({ mPointA.position.x, mPointA.position.y }, { 1, 1 });
 
+        if (mSpeed.x == 0.0f && state != PlayerStates::AIRBORNE)
+        {
+            // Sensor G line and mPoint
+            Alexio::Renderer::DrawQuad({ mPointG.position.x, mPointG.position.y - mHitbox.heightRad - 3.0f }, { 1, mHitbox.heightRad + 3.0f }, { 56.0f / 255.0f, 1.0f, 162.0f / 255.0f, 1.0f });
+            Alexio::Renderer::DrawQuad({ mPointG.position.x, mPointG.position.y }, { 1, 1 });
+        }
+
         // Sensor B line and mPoint
-        Alexio::Renderer::DrawQuad({ mPointB.position.x, mPointB.position.y - mHitbox.heightRad - 3.0f }, { 1, mHitbox.heightRad + 3.0f }, { 56.0f / 255.0f, 1.0f, 162.0f / 255.0f, 1.0f });
+        Alexio::Renderer::DrawQuad({ mPointB.position.x, mPointB.position.y - mHitbox.heightRad - 3.0f }, { 1, mHitbox.heightRad + 3.0f }, { 0.0f, 1.0f, 0.0f, 1.0f });
         Alexio::Renderer::DrawQuad({ mPointB.position.x, mPointB.position.y }, { 1, 1 });
     }
     else

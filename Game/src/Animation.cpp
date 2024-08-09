@@ -394,6 +394,51 @@ void Player::HandleAnimation()
             mSubImagePosition = (Alexio::Vector2)(1 + mSubImageUnitPos) + Alexio::Vector2(mSubImageSize.x * mSubImageUnitPos.x, mSubImageSize.y * mSubImageUnitPos.y + 7.0f);
             break;
         }
+        case PlayerAnimState::BALANCING:
+        {
+            if (mPointA.distance >= 16.0f)
+            {
+                if (mDirection == Direction::RIGHT)
+                {
+                    mSubImagePosition.y = 701.0f;
+                }
+                else
+                {
+                    mSubImageSize.x = 56.0f;
+                    mSubImagePosition.y = 750.0f;
+                }
+            }
+            else if (mPointB.distance >= 16.0f)
+            {
+                if (mDirection == Direction::RIGHT)
+                {
+                    mSubImageSize.x = 56.0f;
+                    mSubImagePosition.y = 750.0f;
+                }
+                else
+                {
+                    mSubImagePosition.y = 701.0f;
+                }
+            }
+                
+            mSubImagePosition.x = (1 + mSubImageUnitPos.x) + mSubImageSize.x * mSubImageUnitPos.x;
+
+            mMaxFrameCount = 3;
+            if (mFrameCounter >= mMaxFrameCount)
+            {
+                if (mSubImageUnitPos.x == 7)
+                    mSubImageUnitPos.x = 0;
+                else
+                    mSubImageUnitPos.x++;
+
+                mFrameCounter = 0;
+            }
+            else
+                mFrameCounter++;
+
+            
+            break;
+        }
         default:
             mAnimationName = "Unknown";
     }

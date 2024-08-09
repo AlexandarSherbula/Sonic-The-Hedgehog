@@ -43,7 +43,8 @@ enum class PlayerAnimState
 	JUMP,
 	ROLLING,
 	PUSHING,
-	AIR_WALK
+	AIR_WALK,
+	BALANCING
 };
 
 class PlayerAnimation : public Animation
