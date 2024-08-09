@@ -619,8 +619,9 @@ void Player::OnImGuiRender()
     ImGui::Text("Air Speed: %.6f", mAirSpeed);
     ImGui::Text("Jumping: %s", mJumped ? "true" : "false");
     ImGui::Text("Jump lock: %s", mJumpLock ? "true" : "false");
-    ImGui::Text("Player State: %s", cPlayerState);
-    ImGui::Text("Player Look State: %s", cPlayerLookState);
+    ImGui::Text("State: %s", cPlayerState);
+    ImGui::Text("Look State: %s", cPlayerLookState);
+    ImGui::Text("Animation: %s", mAnimationName);
     ImGui::Text("A distance: %.6f, B distance: %.6f", mPointA.distance, mPointB.distance);
     ImGui::Text("C distance: %.6f, D distance: %.6f", mPointC.distance, mPointD.distance);
     ImGui::Text("E distance: %.6f, F distance: %.6f", mPointE.distance, mPointF.distance);

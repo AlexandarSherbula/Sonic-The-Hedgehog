@@ -49,6 +49,8 @@ protected:
 	uint8_t mBoredOneCount;
 	uint8_t mBoredTwoCount;
 	uint8_t mBoredTwoMidCount;
+
+	const char* mAnimationName;
 public:
 	PlayerAnimation();
 	PlayerAnimation(const Alexio::Vector2& subImageSize, const Alexio::Vector2i& subImageUnitPos);

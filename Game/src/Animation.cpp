@@ -31,9 +31,7 @@ PlayerAnimation::PlayerAnimation(const Alexio::Vector2& subImageSize, const Alex
     mBoredTwoCount = 0;
     mBoredTwoMidCount = 0;
 
-    char* test = ENUM_TO_STRING_CASE(mAnimationState);
-
-    AIO_LOG_WARN(test);
+    mAnimationName = "Unknown";
 }
 
 void PlayerAnimation::SetAnimationState(PlayerAnimState state, const Alexio::Vector2i& subImageUnitPos)
@@ -71,6 +69,7 @@ void Player::HandleAnimation()
     {
         case PlayerAnimState::IDLE:
         {
+            mAnimationName = "IDLE";
             if (mTimer < 3.0f)
             {
                 mSubImageUnitPos = { 0, 0 };
@@ -158,11 +157,11 @@ void Player::HandleAnimation()
                 }
 
             }
-
             break;
         }
         case PlayerAnimState::LOOK_UP:
         {
+            mAnimationName = "LOOK UP";
             mMaxFrameCount = 3;
 
             if (mFrameCounter == mMaxFrameCount)
@@ -189,6 +188,7 @@ void Player::HandleAnimation()
         }
         case PlayerAnimState::LOOK_DOWN:
         {
+            mAnimationName = "LOOK DOWN";
             mMaxFrameCount = 3;
 
             if (mFrameCounter == mMaxFrameCount)
@@ -215,6 +215,8 @@ void Player::HandleAnimation()
         }
         case PlayerAnimState::MOVE:
         {
+            mAnimationName = "MOVE";
+
             uint8_t firstUnitOffset = 0;
             uint8_t lastUnitOffset = 17;
             uint8_t lastSubImageY = mSubImageUnitPos.y;
@@ -271,6 +273,8 @@ void Player::HandleAnimation()
         }
         case PlayerAnimState::SKID:
         {
+            mAnimationName = "SKID";
+
             if ((mDirection == Direction::LEFT && mGroundSpeed < 0.0f) ||
                 (mDirection == Direction::RIGHT && mGroundSpeed > 0.0f))
             {
@@ -280,9 +284,7 @@ void Player::HandleAnimation()
                 if (mFrameCounter >= mMaxFrameCount)
                 {
                     if (mSubImageUnitPos.x == 8)
-                    {
                         mAnimationState = PlayerAnimState::MOVE;
-                    }
                     else
                         mSubImageUnitPos.x++;
 
@@ -292,14 +294,13 @@ void Player::HandleAnimation()
                     mFrameCounter++;
             }
             else
-            {
                 SetAnimationState(PlayerAnimState::MOVE, { 0, 3 });
-            }
-
             break;
         }
         case PlayerAnimState::SKID_TURN:
         {
+            mAnimationName = "SKID TURN";
+
             mSubImageUnitPos.y = 7;
             mMaxFrameCount = 1;
 
@@ -318,6 +319,11 @@ void Player::HandleAnimation()
         }
         case PlayerAnimState::JUMP: case PlayerAnimState::ROLLING:
         {
+            if (mAnimationState == PlayerAnimState::JUMP)
+                mAnimationName = "JUMP";
+            else if (mAnimationState == PlayerAnimState::ROLLING)
+                mAnimationName = "ROLLING";
+
             mMaxFrameCount = std::floor(std::max(0.0f, 4.0f - std::abs(mGroundSpeed)));
 
             if (mFrameCounter >= mMaxFrameCount)
@@ -335,6 +341,7 @@ void Player::HandleAnimation()
         }
         case PlayerAnimState::PUSHING:
         {
+            mAnimationName = "PUSHING";
             mMaxFrameCount = 5;
             if (mFrameCounter >= mMaxFrameCount)
             {
