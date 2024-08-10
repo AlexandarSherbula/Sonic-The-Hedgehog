@@ -90,9 +90,9 @@ Act::Act()
 void Act::Load(const std::string& name, const std::string& tileSet)
 {
     mGFX = Alexio::Texture::Create("assets/images/" + name + ".png");
-    mTileSet = TileSet("assets/json/" + tileSet + ".json");
+    mTileSet = TileSet("assets/nlohmann/json/" + tileSet + ".json");
 
-    mJson = Parse("assets/json/" + name + ".json");
+    mJson = Parse("assets/nlohmann/json/" + name + ".json");
 
     AIO_ASSERT(!mJson["infinite"], "You forgot to turn off infinite mode in Tiled");
 

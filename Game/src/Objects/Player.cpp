@@ -61,7 +61,7 @@ void Player::FixedUpdate()
         {
             ResetLookStateCamera();
 
-            if (JumpButtonReleased())
+            if (game.JumpButtonReleased())
             {
                 mJumpLock = false;
             }
@@ -71,16 +71,16 @@ void Player::FixedUpdate()
 
             if (mGroundSpeed == 0.0f)
             {
-                if (UpButtonReleased() || DownButtonReleased())
+                if (game.UpButtonReleased() || game.DownButtonReleased())
                 {
-                    if (UpButtonReleased() && lookState == PlayerLookStates::LOOK_UP)
+                    if (game.UpButtonReleased() && lookState == PlayerLookStates::LOOK_UP)
                     {
                         lookState = PlayerLookStates::NORMAL;
                         if (mAnimationState == PlayerAnimState::LOOK_UP)
                             SetSubImageUnitPos({ 5, 2 });
                     }
 
-                    if (DownButtonReleased() && lookState == PlayerLookStates::LOOK_DOWN)
+                    if (game.DownButtonReleased() && lookState == PlayerLookStates::LOOK_DOWN)
                     {
                         mHitbox.heightRad = 16.0f;
                         position.y -= 6.0f;
@@ -94,7 +94,7 @@ void Player::FixedUpdate()
                     mTimerBeforeCameraShift = 0;
                 }
 
-                if (UpButtonHeld() && lookState != PlayerLookStates::LOOK_DOWN)
+                if (game.UpButtonHeld() && lookState != PlayerLookStates::LOOK_DOWN)
                 {
                     if (lookState == PlayerLookStates::NORMAL)
                     {
@@ -111,7 +111,7 @@ void Player::FixedUpdate()
                 }
             }
 
-            if (DownButtonHeld() && (!LeftButtonHeld() && !RightButtonHeld()))
+            if (game.DownButtonHeld() && (!game.LeftButtonHeld() && !game.RightButtonHeld()))
             {
                 if (std::abs(mGroundSpeed) >= 0.5f)
                 {
@@ -134,7 +134,7 @@ void Player::FixedUpdate()
                         mTimerBeforeCameraShift++;
                     else
                     {
-                        if (mLookUpOrDownCameraShift < 88 && Alexio::Engine::GetInstance()->GetCamera()->GetPosition().y >(game.currentAct->screenSize.y - game.cameraController->projectionSize.y) * -1.0f)
+                        if (mLookUpOrDownCameraShift < 88 && Alexio::Engine::GetInstance()->GetCamera()->GetPosition().y >(game.currentAct.screenSize.y - game.cameraController.projectionSize.y) * -1.0f)
                             mLookUpOrDownCameraShift += 2;
                     }
                 }
@@ -143,7 +143,7 @@ void Player::FixedUpdate()
             PushSensors();
 
             if (mAnimationState == PlayerAnimState::PUSHING)
-                if ((LeftButtonReleased() && mDirection == Direction::LEFT) || (RightButtonReleased() && mDirection == Direction::RIGHT)) // TO DO: Alternate the pushing functionality
+                if ((game.LeftButtonReleased() && mDirection == Direction::LEFT) || (game.RightButtonReleased() && mDirection == Direction::RIGHT)) // TO DO: Alternate the pushing functionality
                     if (state == PlayerStates::NORMAL)
                         SetAnimationState(PlayerAnimState::IDLE);
 
@@ -157,7 +157,7 @@ void Player::FixedUpdate()
         {
             ResetLookStateCamera();
 
-            if (JumpButtonReleased())
+            if (game.JumpButtonReleased())
             {
                 mJumpLock = false;
             }
@@ -166,7 +166,7 @@ void Player::FixedUpdate()
 
             if (std::abs(mGroundSpeed) > mRollFrictionSpeed + mRollDecelerationSpeed)
             {
-                bool oppositeDirectionPressed = (LeftButtonHeld() && mDirection == Direction::RIGHT) || (RightButtonHeld() && mDirection == Direction::LEFT);
+                bool oppositeDirectionPressed = (game.LeftButtonHeld() && mDirection == Direction::RIGHT) || (game.RightButtonHeld() && mDirection == Direction::LEFT);
 
                 mGroundSpeed -= (mRollFrictionSpeed + ((oppositeDirectionPressed) ? mRollDecelerationSpeed : 0.0f)) * ((mGroundSpeed > 0.0f) ? 1.0f : -1.0f);
             }
@@ -194,7 +194,7 @@ void Player::FixedUpdate()
                 mTimerBeforeCameraShift = 0;
 
             lookState = PlayerLookStates::NORMAL;
-            if (JumpButtonReleased())
+            if (game.JumpButtonReleased())
             {
                 if (mSpeed.y < -4.0f)
                     mSpeed.y = -4.0f;
@@ -231,7 +231,7 @@ void Player::ResetLookStateCamera()
 
 void Player::CheckForJump()
 {
-    if (JumpButtonHeld() && !mJumped && !mJumpLock)
+    if (game.JumpButtonHeld() && !mJumped && !mJumpLock)
     {
         FindSurface(mPointC);
         FindSurface(mPointD);
@@ -261,7 +261,7 @@ void Player::CheckForJump()
 
 void Player::CheckForMovement()
 {
-    if (LeftButtonHeld() == RightButtonHeld() && state != PlayerStates::AIRBORNE)
+    if (game.LeftButtonHeld() == game.RightButtonHeld() && state != PlayerStates::AIRBORNE)
     {
         mGroundSpeed -= std::min(std::fabs(mGroundSpeed), mFriction) * ((mGroundSpeed > 0.0f) ? 1.0f : -1.0f);
     }
@@ -269,7 +269,7 @@ void Player::CheckForMovement()
     {
         if (lookState == PlayerLookStates::NORMAL)
         {
-            if (LeftButtonHeld())
+            if (game.LeftButtonHeld())
             {
                 if (position.x <= 16.0f)
                 {
@@ -322,7 +322,7 @@ void Player::CheckForMovement()
                 }
             }
 
-            if (RightButtonHeld())
+            if (game.RightButtonHeld())
             {
                 if (state == PlayerStates::AIRBORNE)
                 {
@@ -471,7 +471,7 @@ void Player::GroundSensors()
             if (mJumped)
             {
                 mJumped = false;
-                if (!JumpButtonHeld())
+                if (!game.JumpButtonHeld())
                     mJumpLock = false;
             }
             state = PlayerStates::NORMAL;
@@ -512,7 +512,7 @@ void Player::ApplyGravity()
     mSpeed.y += mGravityForce;
     if (mSpeed.y > 16.0f)
         mSpeed.y = 16.0f;
-    game.cameraController->speed = mSpeed;
+    game.cameraController.speed = mSpeed;
 }
 
 void Player::UpdateSensors()

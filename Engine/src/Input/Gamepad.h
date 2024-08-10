@@ -3,7 +3,7 @@
 #include "Math/Math.h"
 #include "KeyCodes.h"
 
-#include "..\..\dependencies\SDL2-2.30.1\include\SDL.h"
+#include "SDL.h"
 
 namespace Alexio
 {	
@@ -65,7 +65,7 @@ namespace Alexio
 		static inline float LeftTrigger() { return sLeftTrigger; }
 		static inline float RightTrigger() { return sRightTrigger; }
 	
-		static void SetDeadZone(float deadZone);	
+		static void SetDeadZone(float deadZone);
 		static void PollEvents();
 
 		static void Close();

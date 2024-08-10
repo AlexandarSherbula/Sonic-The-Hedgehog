@@ -118,9 +118,11 @@ project "Game"
 
    includedirs
    {
+	  "%{prj.name}/src",
       "Engine/dependencies/spdlog/include",
+	  "Engine/dependencies/SDL2-2.30.1/include",
       "Engine/src",
-      "Engine/dependencies/",
+      "Engine/dependencies/",	  
       "%{IncludeDir.ImGUI}",
       "%{IncludeDir.GLM}"
    }

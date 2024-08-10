@@ -62,9 +62,9 @@ void MovingObject::FindSurface(AnchorPoint& point)
 
 		while (search)
 		{
-			game.currentAct->tileHorizontalFlip = false;
-			game.currentAct->tileVerticalFlip = false;
-			Tile* tile = game.currentAct->GetTile(searchPoint);
+			game.currentAct.tileHorizontalFlip = false;
+			game.currentAct.tileVerticalFlip = false;
+			Tile* tile = game.currentAct.GetTile(searchPoint);
 			if (tile != nullptr && tile->IsSolid() && (point.tileChecker == tile->solidity || tile->solidity == TileSolidity::FULLY_SOLID))
 			{
 				Alexio::Vector2i tilePosition;
@@ -86,7 +86,7 @@ void MovingObject::FindSurface(AnchorPoint& point)
 						bool isEmptyOnLeft = firstCollider.x != 0;
 						bool isEmptyOnRight = lastCollider.x + lastCollider.width < 16.0f;
 
-						if (game.currentAct->tileHorizontalFlip)
+						if (game.currentAct.tileHorizontalFlip)
 							tilePosOffset = (tilePosition.x + 15.0f) - searchPoint.x;
 						else
 							tilePosOffset = searchPoint.x - tilePosition.x;
@@ -124,7 +124,7 @@ void MovingObject::FindSurface(AnchorPoint& point)
 						bool isEmptyOnTop = firstCollider.y != 0;
 						bool isEmptyOnBottom = lastCollider.y + lastCollider.height < 16.0f;
 
-						if (game.currentAct->tileVerticalFlip)
+						if (game.currentAct.tileVerticalFlip)
 							tilePosOffset = (tilePosition.y + 15.0f) - searchPoint.y;
 						else
 							tilePosOffset = searchPoint.y - tilePosition.y;

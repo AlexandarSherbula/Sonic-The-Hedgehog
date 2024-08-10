@@ -2,7 +2,7 @@
 
 #include "Alexio/Engine.h"
 
-#include "Player.h"
+#include "Objects/Player.h"
 
 class CameraController
 {
@@ -17,6 +17,7 @@ public:
 public:
 	CameraController();
 
-	void Update(Player* player, const Alexio::Vector2& actSize);
+	void Create();
+	void Update(Player& player, const Alexio::Vector2& actSize);
 	void DrawBorders();
 };

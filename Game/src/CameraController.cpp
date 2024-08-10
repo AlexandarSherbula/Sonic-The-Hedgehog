@@ -4,6 +4,12 @@
 
 CameraController::CameraController()
 {
+    
+
+}
+
+void CameraController::Create()
+{
     projectionSize =
     {
         Alexio::Engine::GetInstance()->GetWindow()->GetProjectionWidth(),
@@ -12,38 +18,37 @@ CameraController::CameraController()
 
     speed = { 0.0f, 0.0f };
     position = { 0.0f, -352.0f };
-
 }
 
-void CameraController::Update(Player* player, const Alexio::Vector2& actSize)
+void CameraController::Update(Player& player, const Alexio::Vector2& actSize)
 {
     focalPoint = Alexio::Vector2(projectionSize.x / 2.0f - position.x, (projectionSize.y / 2.0f - position.y));
 
-    offset = player->position - focalPoint;
+    offset = player.position - focalPoint;
 
     if (offset.x >= 8.0f)
-        position.x = -player->position.x + 220.0f;
+        position.x = -player.position.x + 220.0f;
     else if (offset.x <= -8.0f)
-        position.x = -player->position.x + 204.0f;
+        position.x = -player.position.x + 204.0f;
 
-    if (player->state == PlayerStates::AIRBORNE)
+    if (player.state == PlayerStates::AIRBORNE)
     {
         if (offset.y < -32.0f)
         {
-            position.y = -player->position.y + 88.0f;
+            position.y = -player.position.y + 88.0f;
             offset.y = -32.0f;
         }
         else if (offset.y > 32.0f)
         {
-            position.y = -player->position.y + 152.0f;
+            position.y = -player.position.y + 152.0f;
             offset.y = 32.0f;
         }
     }
-    else if (player->state == PlayerStates::ROLLING)
+    else if (player.state == PlayerStates::ROLLING)
     {
-        position.y = -player->position.y + 126.0f;
+        position.y = -player.position.y + 126.0f;
     }
-    else if (player->state == PlayerStates::NORMAL)
+    else if (player.state == PlayerStates::NORMAL)
     {
         if (speed.y != 0.0f)
         {
@@ -54,8 +59,8 @@ void CameraController::Update(Player* player, const Alexio::Vector2& actSize)
             }
             position.y -= speed.y;
         }
-        else if (player->lookState == PlayerLookStates::NORMAL)
-            position.y = -player->position.y + 120.0f;
+        else if (player.lookState == PlayerLookStates::NORMAL)
+            position.y = -player.position.y + 120.0f;
     }
 
     if (position.x >= 0.0f)
@@ -68,7 +73,7 @@ void CameraController::Update(Player* player, const Alexio::Vector2& actSize)
     else if (position.y <= (actSize.y - projectionSize.y) * -1.0f)
         position.y = (actSize.y - projectionSize.y) * -1.0f;
 
-    Alexio::Engine::GetInstance()->GetCamera()->SetPosition(Alexio::Vector2(position.x, position.y - player->GetLookUpAndDownCameraShiftOffset()));
+    Alexio::Engine::GetInstance()->GetCamera()->SetPosition(Alexio::Vector2(position.x, position.y - player.GetLookUpAndDownCameraShiftOffset()));
 }
 
 void CameraController::DrawBorders()

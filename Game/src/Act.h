@@ -1,6 +1,6 @@
 #pragma once
 
-#include "nlohmann/json.hpp"
+#include "../assets/nlohmann/json/json.hpp"
 #include "Alexio/Engine.h"
 
 nlohmann::json Parse(const std::string& jsonFile);
