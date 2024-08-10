@@ -398,6 +398,7 @@ void Player::HandleAnimation()
         {
             if (mPointA.distance >= 16.0f)
             {
+                mDrawingPosition.x = position.x + 6.0f;
                 if (mDirection == Direction::RIGHT)
                 {
                     mSubImagePosition.y = 701.0f;
@@ -410,6 +411,8 @@ void Player::HandleAnimation()
             }
             else if (mPointB.distance >= 16.0f)
             {
+                mDrawingPosition.x = position.x - 6.0f;
+
                 if (mDirection == Direction::RIGHT)
                 {
                     mSubImageSize.x = 56.0f;

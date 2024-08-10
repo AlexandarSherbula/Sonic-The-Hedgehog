@@ -15,6 +15,16 @@ group "Dependencies"
    include "Engine/dependencies/imgui"
 group ""
 
+function file_exists(path)
+    local file = io.open(path, "r")
+    if file then
+        file:close()
+        return true
+    else
+        return false
+    end
+end
+
 project "Engine"
    location "Engine"
    kind "StaticLib"
@@ -118,6 +128,11 @@ project "Game"
    links
    {
       "Engine"
+   }
+   
+   postbuildcommands
+   {
+   	 "{COPYFILE} ../Engine/dependencies/SDL2-2.30.1/lib/x64/SDL2.dll ../build/%{prj.name}/bin/%{cfg.system}/%{cfg.buildcfg}-%{cfg.architecture}"
    }
 
    filter "configurations:Debug"

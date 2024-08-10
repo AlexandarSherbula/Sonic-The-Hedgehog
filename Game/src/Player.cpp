@@ -554,6 +554,8 @@ void Player::Draw()
         mDrawingPosition.y = position.y - 10.0f; 
 
     Alexio::Renderer::DrawPartialSprite(mGFX, mDrawingPosition, mSubImagePosition, mSubImageSize, 0.0f, Alexio::Vector4(1.0f), {1.0f * (int)mDirection, 1.0f});
+
+    //DrawHitbox();
 }
 
 void Player::DrawHitbox()
@@ -646,6 +648,7 @@ void Player::OnImGuiRender()
     ImGui::Text("A distance: %.6f, B distance: %.6f", mPointA.distance, mPointB.distance);
     ImGui::Text("C distance: %.6f, D distance: %.6f", mPointC.distance, mPointD.distance);
     ImGui::Text("E distance: %.6f, F distance: %.6f", mPointE.distance, mPointF.distance);
+    ImGui::Text("G distance: %.6f", mPointG.distance);
     ImGui::Text("");
     ImGui::Text("Camera Shift Offset: %d", mLookUpOrDownCameraShift);
     ImGui::Text("Timer Before Camera Shift: %d", mTimerBeforeCameraShift);
