@@ -10,6 +10,7 @@ Game::Game()
 bool Game::OnStart()
 {
     currentAct.Load("GHZ_Act_1", "GHZ_Tiles");
+
     cameraController.Create();
 
     player = Player(Alexio::Vector2(212.0f, 492.0f), 8, 16, Direction::RIGHT, "assets/images/character/SonicSpriteSheet.png");

@@ -42,6 +42,7 @@ public:
 	Object(const Alexio::Vector2& position, int widthRadius, int heightRadius, Direction direction = Direction::RIGHT, const std::string& gfxFilePath = "");
 
 	virtual void Draw();
+	inline Alexio::Ref<Alexio::Texture> GetSprite() { return mGFX; }
 };
 
 

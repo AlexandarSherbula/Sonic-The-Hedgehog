@@ -13,10 +13,6 @@ public:
 	inline void SetSubImageSize(const Alexio::Vector2& subImageSize) { mSubImageSize = subImageSize; };
 	inline void SetSubImageUnitPos(const Alexio::Vector2& subImageUnitPos) { mSubImageUnitPos = subImageUnitPos; };
 
-	inline Alexio::Vector2 GetSubImageUnitPos() { return mSubImageUnitPos; };
-	inline Alexio::Vector2 GetSubImagePosition() { return Alexio::Vector2(mSubImageSize.x * mSubImageUnitPos.x, mSubImageSize.y * mSubImageUnitPos.y); }
-	inline Alexio::Vector2 GetSubImageSize() { return mSubImageSize; }
-
 	virtual void ResetCounters();
 protected:
 	const char* mAnimationName;

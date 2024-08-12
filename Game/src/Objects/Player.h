@@ -67,6 +67,7 @@ private:
 	void ResetLookStateCamera();
 	void CheckForJump();
 	void CheckForMovement();
+	void LookUpOrDown();
 	void PushSensors();
 	void CeilingSensors();
 	void UpdateMovement();

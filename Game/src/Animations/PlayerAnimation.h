@@ -28,7 +28,6 @@ public:
 	PlayerAnimation();
 	PlayerAnimation(const Alexio::Vector2& subImageSize, const Alexio::Vector2i& subImageUnitPos);
 
-	void HandleAnimation() override {};
 	void ResetCounters() override;
 
 	void SetAnimationState(PlayerAnimState state, const Alexio::Vector2i& subImageUnitPos = { 0, 0 });

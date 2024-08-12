@@ -67,83 +67,15 @@ void Player::FixedUpdate()
             }
 
             CheckForJump();
+
             CheckForMovement();
 
-            if (mGroundSpeed == 0.0f)
-            {
-                if (game.UpButtonReleased() || game.DownButtonReleased())
-                {
-                    if (game.UpButtonReleased() && lookState == PlayerLookStates::LOOK_UP)
-                    {
-                        lookState = PlayerLookStates::NORMAL;
-                        if (mAnimationState == PlayerAnimState::LOOK_UP)
-                            SetSubImageUnitPos({ 5, 2 });
-                    }
-
-                    if (game.DownButtonReleased() && lookState == PlayerLookStates::LOOK_DOWN)
-                    {
-                        mHitbox.heightRad = 16.0f;
-                        position.y -= 6.0f;
-                        lookState = PlayerLookStates::NORMAL;
-
-                        if (mAnimationState == PlayerAnimState::LOOK_DOWN)
-                            SetSubImageUnitPos({ 11, 2 });
-
-                        UpdateSensors();
-                    }
-                    mTimerBeforeCameraShift = 0;
-                }
-
-                if (game.UpButtonHeld() && lookState != PlayerLookStates::LOOK_DOWN)
-                {
-                    if (lookState == PlayerLookStates::NORMAL)
-                    {
-                        lookState = PlayerLookStates::LOOK_UP;
-                        SetAnimationState(PlayerAnimState::LOOK_UP, { 0, 2 });
-                    }
-                    if (mTimerBeforeCameraShift < 60)
-                        mTimerBeforeCameraShift++;
-                    else
-                    {
-                        if (mLookUpOrDownCameraShift > -104 && Alexio::Engine::GetInstance()->GetCamera()->GetPosition().y < 0.0f)
-                            mLookUpOrDownCameraShift -= 2;
-                    }
-                }
-            }
-
-            if (game.DownButtonHeld() && (!game.LeftButtonHeld() && !game.RightButtonHeld()))
-            {
-                if (std::abs(mGroundSpeed) >= 0.5f)
-                {
-                    mHitbox.heightRad = 10.0f;
-                    position.y += 6.0f;
-                    state = PlayerStates::ROLLING;
-                    SetAnimationState(PlayerAnimState::ROLLING, { 0, 8 });
-                }
-                else if (mGroundSpeed == 0.0f && lookState != PlayerLookStates::LOOK_UP)
-                {
-                    if (lookState == PlayerLookStates::NORMAL)
-                    {
-                        mHitbox.heightRad = 10.0f;
-                        position.y += 6.0f;
-                        lookState = PlayerLookStates::LOOK_DOWN;
-                        SetAnimationState(PlayerAnimState::LOOK_DOWN, { 7, 2 });
-                    }
-
-                    if (mTimerBeforeCameraShift < 60)
-                        mTimerBeforeCameraShift++;
-                    else
-                    {
-                        if (mLookUpOrDownCameraShift < 88 && Alexio::Engine::GetInstance()->GetCamera()->GetPosition().y >(game.currentAct.screenSize.y - game.cameraController.projectionSize.y) * -1.0f)
-                            mLookUpOrDownCameraShift += 2;
-                    }
-                }
-            }
+            LookUpOrDown();
 
             PushSensors();
 
             if (mAnimationState == PlayerAnimState::PUSHING)
-                if ((game.LeftButtonReleased() && mDirection == Direction::LEFT) || (game.RightButtonReleased() && mDirection == Direction::RIGHT)) // TO DO: Alternate the pushing functionality
+                if ((game.LeftButtonReleased() && mDirection == Direction::LEFT) || (game.RightButtonReleased() && mDirection == Direction::RIGHT))
                     if (state == PlayerStates::NORMAL)
                         SetAnimationState(PlayerAnimState::IDLE);
 
@@ -363,6 +295,80 @@ void Player::CheckForMovement()
                             mGroundSpeed = mTop;
                     }
                 }
+            }
+        }
+    }
+}
+
+void Player::LookUpOrDown()
+{
+    if (mGroundSpeed == 0.0f)
+    {
+        if (game.UpButtonReleased() || game.DownButtonReleased())
+        {
+            if (game.UpButtonReleased() && lookState == PlayerLookStates::LOOK_UP)
+            {
+                lookState = PlayerLookStates::NORMAL;
+                if (mAnimationState == PlayerAnimState::LOOK_UP)
+                    SetSubImageUnitPos({ 5, 2 });
+            }
+
+            if (game.DownButtonReleased() && lookState == PlayerLookStates::LOOK_DOWN)
+            {
+                mHitbox.heightRad = 16.0f;
+                position.y -= 6.0f;
+                lookState = PlayerLookStates::NORMAL;
+
+                if (mAnimationState == PlayerAnimState::LOOK_DOWN)
+                    SetSubImageUnitPos({ 11, 2 });
+
+                UpdateSensors();
+            }
+            mTimerBeforeCameraShift = 0;
+        }
+
+        if (game.UpButtonHeld() && lookState != PlayerLookStates::LOOK_DOWN)
+        {
+            if (lookState == PlayerLookStates::NORMAL)
+            {
+                lookState = PlayerLookStates::LOOK_UP;
+                SetAnimationState(PlayerAnimState::LOOK_UP, { 0, 2 });
+            }
+            if (mTimerBeforeCameraShift < 60)
+                mTimerBeforeCameraShift++;
+            else
+            {
+                if (mLookUpOrDownCameraShift > -104 && Alexio::Engine::GetInstance()->GetCamera()->GetPosition().y < 0.0f)
+                    mLookUpOrDownCameraShift -= 2;
+            }
+        }
+    }
+
+    if (game.DownButtonHeld() && (!game.LeftButtonHeld() && !game.RightButtonHeld()))
+    {
+        if (std::abs(mGroundSpeed) >= 0.5f)
+        {
+            mHitbox.heightRad = 10.0f;
+            position.y += 6.0f;
+            state = PlayerStates::ROLLING;
+            SetAnimationState(PlayerAnimState::ROLLING, { 0, 8 });
+        }
+        else if (mGroundSpeed == 0.0f && lookState != PlayerLookStates::LOOK_UP)
+        {
+            if (lookState == PlayerLookStates::NORMAL)
+            {
+                mHitbox.heightRad = 10.0f;
+                position.y += 6.0f;
+                lookState = PlayerLookStates::LOOK_DOWN;
+                SetAnimationState(PlayerAnimState::LOOK_DOWN, { 7, 2 });
+            }
+
+            if (mTimerBeforeCameraShift < 60)
+                mTimerBeforeCameraShift++;
+            else
+            {
+                if (mLookUpOrDownCameraShift < 88 && Alexio::Engine::GetInstance()->GetCamera()->GetPosition().y >(game.currentAct.screenSize.y - game.cameraController.projectionSize.y) * -1.0f)
+                    mLookUpOrDownCameraShift += 2;
             }
         }
     }
