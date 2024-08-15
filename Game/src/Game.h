@@ -4,6 +4,7 @@
 
 #include "Act.h"
 #include "Objects/Player.h"
+#include "Objects/Water.h"
 #include "CameraController.h"
 
 class Game : public Alexio::Engine
@@ -12,12 +13,14 @@ public:
 	Act currentAct;
 	Player player;
 	CameraController cameraController;
+	Water water;
 public:
 	Game();
 
 	bool OnStart() override;
 	bool OnUpdate() override;
 	bool OnFixedUpdate() override;
+	bool OnLateUpdate() override;
 	
 	void OnImGuiRender();
 

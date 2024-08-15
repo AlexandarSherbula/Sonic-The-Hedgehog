@@ -47,6 +47,9 @@ void PlayerAnimation::ResetCounters()
 
 void Player::HandleAnimation()
 {
+    if (mGroundSpeed == 0.0f && (mAnimationState == PlayerAnimState::MOVE || mAnimationState == PlayerAnimState::ROLLING))
+        SetAnimationState(PlayerAnimState::IDLE);
+
     mSubImageSize = { 48.0f, 48.0f };
     mDrawingPosition = { position.x, position.y - 4.0f };
 
@@ -235,7 +238,7 @@ void Player::HandleAnimation()
             firstUnitOffset = 0;
             lastUnitOffset = 9;
         }
-        else
+        else if (std::abs(mGroundSpeed) >= 6.0f && std::abs(mGroundSpeed) < 10.0f)
         {
             mMaxFrameCount = std::floor(std::max(0.0f, 7.0f - std::abs(mGroundSpeed)));
             if (lastSubImageY != 5)
@@ -245,6 +248,18 @@ void Player::HandleAnimation()
             }
             firstUnitOffset = 0;
             lastUnitOffset = 7;
+        }
+        else
+        {
+            mMaxFrameCount = std::floor(std::max(0.0f, 7.0f - std::abs(mGroundSpeed)));
+            if (lastSubImageY != 6)
+            {
+                mSubImageUnitPos = { 0, 6 };
+                lastSubImageY = mSubImageUnitPos.y;
+            }
+
+            firstUnitOffset = 1;
+            lastUnitOffset = 4;
         }
 
         if (mFrameCounter >= mMaxFrameCount)

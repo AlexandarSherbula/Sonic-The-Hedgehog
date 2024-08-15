@@ -31,6 +31,7 @@ namespace Alexio
 		virtual bool OnStart() = 0;
 		virtual bool OnUpdate() = 0;
 		virtual bool OnFixedUpdate() = 0;
+		virtual bool OnLateUpdate() = 0;
 
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* layer);

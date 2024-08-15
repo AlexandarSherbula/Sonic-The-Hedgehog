@@ -47,9 +47,12 @@ namespace Alexio
 	{
 	public:
 		static void Init();
+		static void AddCustomShader(const Ref<Shader>& shader);
 		static void StartNewBatch();
 		static void SubmitBatch();
 		static void End();
+	public:
+		inline static Ref<Texture>& GetWhiteTexture() { return WhiteTexture; }
 	public:
 		static uint32_t QuadCount;
 		static uint32_t IndexCount;
@@ -62,11 +65,12 @@ namespace Alexio
 		static std::array<uint32_t, MaxTextureSlots> TextureIDs;
 
 		static Ref<Texture>      WhiteTexture;
-	private:
 		static Ref<VertexArray>  vertexArray;
-		static Ref<VertexBuffer> vertexBuffer;
-		static Ref<IndexBuffer>  indexBuffer;
-		static Ref<Shader>       shader;
+	private:
+		static Ref<VertexBuffer>         vertexBuffer;
+		static Ref<IndexBuffer>          indexBuffer;
+		static Ref<Shader>               shader;
+		static std::vector<Ref<Shader>>  customShaders;
 
 		static QuadVertex* baseVertexBuffer;
 	};

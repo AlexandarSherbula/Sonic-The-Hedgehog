@@ -21,8 +21,7 @@ Player::Player(const Alexio::Vector2& position, int widthRad, int heightRad, Dir
     mPointF = AnchorPoint({ 1,  0 },  TileSolidity::SIDE_AND_CEILING);
 
     mPointG = AnchorPoint({ 0,  1 }, TileSolidity::GROUD_ONLY);
-    
-
+ 
     mTop = 6.0f;
     mAngle = 0.0f;
 
@@ -47,9 +46,6 @@ Player::Player(const Alexio::Vector2& position, int widthRad, int heightRad, Dir
 
 void Player::Update()
 {
-    if (mGroundSpeed == 0.0f && (mAnimationState == PlayerAnimState::MOVE || mAnimationState == PlayerAnimState::ROLLING))
-        SetAnimationState(PlayerAnimState::IDLE);
-
     HandleAnimation();
 }
 
@@ -554,12 +550,14 @@ void Player::Draw()
     /*
     * Because the physical position in Y axis drops down by 10 while crouching, we need to offset the drawing image position by so.
     * We're checking the functionality state instead of animation state, because animation goes through standing up phase before it
-    * switches to another animation, but we need to swap back to original position immediately after down button has been released.
+    * switches to another animation, but the physical original position needs to switch back immediately after down button has been 
+    * released.
     */
     if (lookState == PlayerLookStates::LOOK_DOWN)
         mDrawingPosition.y = position.y - 10.0f; 
 
-    Alexio::Renderer::DrawPartialSprite(mGFX, mDrawingPosition, mSubImagePosition, mSubImageSize, 0.0f, Alexio::Vector4(1.0f), {1.0f * (int)mDirection, 1.0f});
+    
+    Alexio::Renderer::DrawPartialSprite(mGFX, mDrawingPosition, mSubImagePosition, mSubImageSize, 0.0f, Alexio::Vector4(1.0f), { 1.0f * (int)mDirection, 1.0f });
 
     //DrawHitbox();
 }

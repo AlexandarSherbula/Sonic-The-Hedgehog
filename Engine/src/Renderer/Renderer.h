@@ -38,6 +38,9 @@ namespace Alexio
 		static void DrawPartialSprite(const Ref<Texture>& texture, const Vector2& position, const Vector2& tileOffset, const Vector2& tileSize, float angle = 0.0f, const Vector4& colorTint = Vector4(1.0f), const Vector2& scale = { 1.0f, 1.0f });
 		static void DrawRotatedSprite(const Ref<Texture>& texture, const Vector2& position, float angle = 0.0f, const Vector4& color = Vector4(1.0f), const Vector2& scale = { 1.0f, 1.0f });
 
+		//static void DrawCustomSprite(const Ref<Texture>& texture, const Ref<Shader>& shader, const Vector2& position, const Vector4& color = Vector4(1.0f), const Vector2& scale = { 1.0f, 1.0f });
+		//static void DrawPartialCustomSprite(const Ref<Texture>& texture, const Ref<Shader>& shader, const Vector2& position, const Vector2& tileOffset, const Vector2& tileSize, float angle = 0.0f, const Vector4& colorTint = Vector4(1.0f), const Vector2& scale = { 1.0f, 1.0f });
+
 		static void Flush();
 
 		static void Draw(uint32_t vertexCount);

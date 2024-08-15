@@ -62,6 +62,8 @@ namespace Alexio
 
 			sMainCamera->OnUpdate(Timer::DetlaTime());
 			Renderer::Flush();
+
+			OnLateUpdate();
 			imgui.End();
 
 			Renderer::GetBackend()->SwapBuffer();

@@ -1,14 +1,15 @@
 #pragma once
 
 #include "Utilities.h"
-#include "Renderer/Texture.h"
+#include "Renderer/Renderer.h"
 
 namespace Alexio
 {
 	class AssetManager
 	{
 	public:
-		static void CreateCustomSprite(const Ref<Texture>& texture);
+		static Ref<Texture> CreateCustomSprite();
+		static Ref<Shader>  CreateCustomShader();
 	};
 }
 

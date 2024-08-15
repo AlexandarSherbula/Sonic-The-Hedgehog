@@ -179,5 +179,5 @@ unsigned int Act::GetTileID(const Alexio::Vector2i& pos)
 
 void Act::Draw()
 {
-    Alexio::Renderer::DrawSprite(mGFX, { 0.0f, 0.0f });
+    Alexio::Renderer::DrawSprite(mGFX, { 0.0f, 0.0f }, Alexio::Vector4(1.0f), {1.0f, 1.0f});
 }

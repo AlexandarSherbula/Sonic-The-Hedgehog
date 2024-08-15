@@ -75,6 +75,7 @@ namespace Alexio
     Ref<IndexBuffer>  QuadRenderer::indexBuffer  = nullptr;
     Ref<Shader>       QuadRenderer::shader       = nullptr;
     Ref<Texture>      QuadRenderer::WhiteTexture = nullptr;
+    std::vector<Ref<Shader>> QuadRenderer::customShaders;
 
     uint32_t QuadRenderer::QuadCount  = 0;
     uint32_t QuadRenderer::IndexCount = 0;
@@ -132,6 +133,11 @@ namespace Alexio
         TextureIDs[TextureSlotIndex] = WhiteTexture->GetID();
         TextureSlotIndex++;
 	}
+
+    void QuadRenderer::AddCustomShader(const Ref<Shader>& shader)
+    {
+        customShaders.push_back(shader);
+    }
 
     void QuadRenderer::StartNewBatch()
     {

@@ -21,6 +21,11 @@ struct AnchorPoint
 	AnchorPoint(const Alexio::Vector2i& direction, TileSolidity tileChecker);
 };
 
+struct SwapColorBuffer
+{
+	Alexio::Vector4 targetColor;
+};
+
 class Object
 {
 public:
@@ -39,6 +44,7 @@ protected:
 	Alexio::Ref<Alexio::Texture> mGFX;
 public:
 	Object();
+	Object(const Alexio::Vector2& position, int widthRadius, int heightRadius);
 	Object(const Alexio::Vector2& position, int widthRadius, int heightRadius, Direction direction = Direction::RIGHT, const std::string& gfxFilePath = "");
 
 	virtual void Draw();

@@ -67,7 +67,6 @@ public:
 	unsigned int GetTileID(const Alexio::Vector2i& pos);
 
 	void Draw();
-
 public:
 	Alexio::Vector2i screenSize;
 

@@ -15,6 +15,13 @@ Object::Object()
 	mHitbox.heightRad = 0;
 }
 
+Object::Object(const Alexio::Vector2& position, int widthRadius, int heightRadius)
+{
+	this->position = position;
+	mHitbox.widthRad = widthRadius;
+	mHitbox.heightRad = heightRadius;
+}
+
 Object::Object(const Alexio::Vector2& position, int widthRadius, int heightRadius, Direction direction, const std::string& gfxFilePath)
 {
 	this->position = position;

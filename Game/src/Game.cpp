@@ -15,6 +15,8 @@ bool Game::OnStart()
 
     player = Player(Alexio::Vector2(212.0f, 492.0f), 8, 16, Direction::RIGHT, "assets/images/character/SonicSpriteSheet.png");
 
+    water = Water(Alexio::Vector2(384.0f, 384.0f), 30, 30);
+
 	return true;
 }
 
@@ -41,6 +43,12 @@ bool Game::OnUpdate()
     return !Alexio::Input::KeyPressed(ESCAPE);
 }
 
+bool Game::OnLateUpdate()
+{
+    water.Draw();
+
+    return true;
+}
 
 void Game::OnImGuiRender()
 {

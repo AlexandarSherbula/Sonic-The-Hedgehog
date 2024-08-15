@@ -26,8 +26,8 @@ namespace Alexio
 		sCameraBuffer = ConstantBuffer::Create(sizeof(glm::mat4x4), 0);
 
 		LineRenderer::Init();
-		QuadRenderer::Init();
 		CircleRenderer::Init();
+		QuadRenderer::Init();
 
 		StartBatches();
 
@@ -37,8 +37,8 @@ namespace Alexio
 	void Renderer::StartBatches()
 	{
 		LineRenderer::StartNewBatch();
-		QuadRenderer::StartNewBatch();
 		CircleRenderer::StartNewBatch();
+		QuadRenderer::StartNewBatch();
 	}
 
 	void Renderer::Clear(float r, float g, float b, float a)
@@ -64,16 +64,16 @@ namespace Alexio
 
 	void Renderer::Flush()
 	{
-		LineRenderer::SubmitBatch();
 		QuadRenderer::SubmitBatch();
 		CircleRenderer::SubmitBatch();
+		LineRenderer::SubmitBatch();
 	}
 
 	void Renderer::End()
 	{
 		LineRenderer::End();
-		QuadRenderer::End();
 		CircleRenderer::End();
+		QuadRenderer::End();
 	}
 
 	void Renderer::DrawLine(const Vector2& p0, const Vector2& p1, const Vector4& color)
@@ -289,6 +289,7 @@ namespace Alexio
 		Stats.Quads++;
 
 		texture->Bind(texIndex);
+		
 		if (texIndex == QuadRenderer::TextureSlotIndex)
 		{
 			QuadRenderer::TextureIDs[QuadRenderer::TextureSlotIndex] = texture->GetID();
