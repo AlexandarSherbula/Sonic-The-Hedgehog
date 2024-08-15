@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Alexio/Engine.h"
 
 #include "Object.h"
 #include "Animations/PlayerAnimation.h"
@@ -63,6 +62,7 @@ public:
 	void OnImGuiRender();
 
 	inline int8_t GetLookUpAndDownCameraShiftOffset() { return mLookUpOrDownCameraShift; }
+	inline bool MoveInCorrectDirection();
 private:
 	void ResetLookStateCamera();
 	void CheckForJump();

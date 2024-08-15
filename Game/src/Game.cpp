@@ -45,7 +45,7 @@ bool Game::OnUpdate()
 
 bool Game::OnLateUpdate()
 {
-    water.Draw();
+    //water.Draw();
 
     return true;
 }

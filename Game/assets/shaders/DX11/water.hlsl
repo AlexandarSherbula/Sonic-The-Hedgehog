@@ -40,45 +40,23 @@ struct PS_INPUT
 Texture2D objTexture[32] : TEXTURE : register(t0);
 SamplerState objSampler: SAMPLER : register(s0);
 
+bool IsEqual(float4 color1, float4 color2, float epsilon)
+{
+    return all(abs(color1 - color2) < epsilon);
+}
+
 float4 PSMain(PS_INPUT input) : SV_TARGET
 {
     int index = input.inTexIndex;
-    float4 pixel = float4(0.0, 0.5, 0.5, 0.5);
     
-    //switch (index)
-    //{
-    //    case 0:  pixel = objTexture[0].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //    case 1:  pixel = objTexture[1].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //    case 2:  pixel = objTexture[2].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //    case 3:  pixel = objTexture[3].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //    case 4:  pixel = objTexture[4].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //    case 5:  pixel = objTexture[5].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //    case 6:  pixel = objTexture[6].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //    case 7:  pixel = objTexture[7].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //    case 8:  pixel = objTexture[8].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //    case 9:  pixel = objTexture[9].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //    case 10: pixel = objTexture[10].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //    case 11: pixel = objTexture[11].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //    case 12: pixel = objTexture[12].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //    case 13: pixel = objTexture[13].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //    case 14: pixel = objTexture[14].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //    case 15: pixel = objTexture[15].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //    case 16: pixel = objTexture[16].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //    case 17: pixel = objTexture[17].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //    case 18: pixel = objTexture[18].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //    case 19: pixel = objTexture[19].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //    case 20: pixel = objTexture[20].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //    case 21: pixel = objTexture[21].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //    case 22: pixel = objTexture[22].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //    case 23: pixel = objTexture[23].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //    case 24: pixel = objTexture[24].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //    case 25: pixel = objTexture[25].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //    case 26: pixel = objTexture[26].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //    case 27: pixel = objTexture[27].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //    case 28: pixel = objTexture[28].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //    case 29: pixel = objTexture[29].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //    case 30: pixel = objTexture[30].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //    case 31: pixel = objTexture[31].Sample(objSampler, input.inTexCoord) * input.inColor; break;
-    //}    
+    float4 targetColor = float4(24.0 / 255.0, 136.0 / 255.0, 240.0 / 255.0, 1.0);
+    float4 newColor = float4(0, 0, 1.0, 0.9);
+    
+    float4 pixel = float4(0.0, 0.5, 0.5, 0.7);
+    objTexture[0].Sample(objSampler, input.inTexCoord) * input.inColor;
+        
+    if (IsEqual(pixel, targetColor, 0.1))
+        pixel = newColor;
+    
     return pixel;
 }

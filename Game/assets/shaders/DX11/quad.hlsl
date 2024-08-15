@@ -59,6 +59,7 @@ float4 PSMain(PS_INPUT input) : SV_TARGET
     
     float4 newColor = float4(1.0, 1.0, 1.0, 0.0);
     
+    
     switch (index)
     {
         case 0:  pixel = objTexture[0].Sample(objSampler, input.inTexCoord) * input.inColor; break;

@@ -281,26 +281,20 @@ void Player::HandleAnimation()
     {
         mAnimationName = "SKID";
 
-        if ((mDirection == Direction::LEFT && mGroundSpeed < 0.0f) ||
-            (mDirection == Direction::RIGHT && mGroundSpeed > 0.0f))
+        mSubImageUnitPos.y = 7;
+        mMaxFrameCount = std::ceil(std::max(1.0f, std::abs(mGroundSpeed) - 6.0f));
+
+        if (mFrameCounter >= mMaxFrameCount)
         {
-            mSubImageUnitPos.y = 7;
-            mMaxFrameCount = 1;
-
-            if (mFrameCounter >= mMaxFrameCount)
-            {
-                if (mSubImageUnitPos.x == 8)
-                    mAnimationState = PlayerAnimState::MOVE;
-                else
-                    mSubImageUnitPos.x++;
-
-                mFrameCounter = 0;
-            }
+            if (mSubImageUnitPos.x == 8)
+                mAnimationState = PlayerAnimState::MOVE;
             else
-                mFrameCounter++;
+                mSubImageUnitPos.x++;
+
+            mFrameCounter = 0;
         }
         else
-            SetAnimationState(PlayerAnimState::MOVE, { 0, 3 });
+            mFrameCounter++;
 
         mSubImagePosition = (Alexio::Vector2)(1 + mSubImageUnitPos) + Alexio::Vector2(mSubImageSize.x * mSubImageUnitPos.x, mSubImageSize.y * mSubImageUnitPos.y);
         break;
@@ -375,6 +369,8 @@ void Player::HandleAnimation()
     }
     case PlayerAnimState::AIR_WALK:
     {
+        mAnimationName = "AIR WALK";
+
         mMaxFrameCount = 3;
         if (mFrameCounter >= mMaxFrameCount)
         {
@@ -394,6 +390,8 @@ void Player::HandleAnimation()
     }
     case PlayerAnimState::BALANCING:
     {
+        mAnimationName = "BALANCING";
+
         if (mPointA.distance >= 16.0f)
         {
             mDrawingPosition.x = position.x + 6.0f;

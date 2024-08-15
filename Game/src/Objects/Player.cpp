@@ -14,15 +14,15 @@ Player::Player(const Alexio::Vector2& position, int widthRad, int heightRad, Dir
     mPointA = AnchorPoint({ 0,  1 }, TileSolidity::GROUD_ONLY);
     mPointB = AnchorPoint({ 0,  1 }, TileSolidity::GROUD_ONLY);
 
-    mPointC = AnchorPoint({ 0, -1 },  TileSolidity::SIDE_AND_CEILING);
-    mPointD = AnchorPoint({ 0,  -1 }, TileSolidity::SIDE_AND_CEILING);
+    mPointC = AnchorPoint({ 0, -1 }, TileSolidity::SIDE_AND_CEILING);
+    mPointD = AnchorPoint({ 0, -1 }, TileSolidity::SIDE_AND_CEILING);
 
     mPointE = AnchorPoint({ -1,  0 }, TileSolidity::SIDE_AND_CEILING);
-    mPointF = AnchorPoint({ 1,  0 },  TileSolidity::SIDE_AND_CEILING);
+    mPointF = AnchorPoint({  1,  0 }, TileSolidity::SIDE_AND_CEILING);
 
     mPointG = AnchorPoint({ 0,  1 }, TileSolidity::GROUD_ONLY);
  
-    mTop = 6.0f;
+    mTop = 10.0f;
     mAngle = 0.0f;
 
     mAcceleration = mFriction = 0.046875f;
@@ -148,6 +148,11 @@ void Player::FixedUpdate()
     }
 }
 
+bool Player::MoveInCorrectDirection()
+{
+    return (mGroundSpeed < 0.0f && mDirection == Direction::LEFT && game.LeftButtonHeld()) || (mGroundSpeed > 0.0f && mDirection == Direction::RIGHT && game.RightButtonHeld());
+}
+
 void Player::ResetLookStateCamera()
 {
     if (mLookUpOrDownCameraShift < 0 && lookState != PlayerLookStates::LOOK_UP)
@@ -223,14 +228,20 @@ void Player::CheckForMovement()
                         if (mGroundSpeed > 0.0f)
                         {
                             if (mGroundSpeed >= 4.0f)
+                            {
+                                if (mDirection == Direction::LEFT)
+                                    mDirection = Direction::RIGHT;
                                 SetAnimationState(PlayerAnimState::SKID, {0, 7});
+                            }
 
                             mGroundSpeed -= mDeceleration;
 
                             if (mGroundSpeed <= 0)
                             {
                                if (mAnimationState == PlayerAnimState::SKID)
+                               {
                                     SetAnimationState(PlayerAnimState::SKID_TURN, { 9, 7 });
+                               }
 
                                mGroundSpeed = -mDeceleration;
                             }
@@ -267,7 +278,11 @@ void Player::CheckForMovement()
                     if (mGroundSpeed < 0.0f)
                     {
                         if (mGroundSpeed <= -4.0f)
+                        {
+                            if (mDirection == Direction::RIGHT)
+                                mDirection = Direction::LEFT;
                             SetAnimationState(PlayerAnimState::SKID, { 0, 7 });
+                        }
 
                         mGroundSpeed += mDeceleration;
 
@@ -410,7 +425,7 @@ void Player::PushSensors()
             {
                 mAirSpeed = 0.0f;
             }
-            else if (state == PlayerStates::NORMAL)
+            else if (state == PlayerStates::NORMAL && MoveInCorrectDirection())
             {
                 SetAnimationState(PlayerAnimState::PUSHING, { 0, 9 });
             } 
@@ -429,7 +444,7 @@ void Player::PushSensors()
                 mAirSpeed = 0.0f;
                 mSpeed.x = 0.0f;
             }
-            else if (state == PlayerStates::NORMAL)
+            else if (state == PlayerStates::NORMAL && MoveInCorrectDirection())
             {
                 SetAnimationState(PlayerAnimState::PUSHING, { 0, 9 });
             }
@@ -497,7 +512,7 @@ void Player::GroundSensors()
         mAirSpeed = mSpeed.x;
     }
 
-    if (mPointG.distance >= 16.0f && state == PlayerStates::NORMAL && mSpeed.x == 0.0f)
+    if (mPointG.distance >= 16.0f && state == PlayerStates::NORMAL && mSpeed.x == 0.0f && lookState == PlayerLookStates::NORMAL)
         SetAnimationState(PlayerAnimState::BALANCING);
 }
 
